@@ -1,0 +1,7 @@
+
+1. Scrape basketball-reference.com to collect all the data we will need into one dataframe. 
+2. Use test error methods to determine which variables are beneficial to model, which are not.
+3. Use test error methods to determine which regression model fits the best.
+4. Create confusion matrices to visualize effectiveness of model. 
+5. Fit variables to determined model, predict the next nba champion. 
+6. Create visuals. 
