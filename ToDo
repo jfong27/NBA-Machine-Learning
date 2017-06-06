@@ -3,5 +3,7 @@
 2. Use test error methods to determine which variables are beneficial to model, which are not.
 3. Use test error methods to determine which regression model fits the best.
 4. Create confusion matrices to visualize effectiveness of model. 
+ - Likely model: MLPClassifier from neural network package. Use many continuous/categorical variables to predict
+                 a categorical output. 
 5. Fit variables to determined model, predict the next nba champion. 
 6. Create visuals. 
