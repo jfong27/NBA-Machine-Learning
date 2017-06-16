@@ -169,18 +169,23 @@ def plot_rpg():
     plt.figure(figsize=(12,7))
     plt.plot(champs['Year'], champs['RPG'], 'y')
     plt.plot(range(1960,2018), others.groupby('Year')['RPG'].mean())
+    plt.title('Rebounds per Game')
+    plt.legend(['Champion', 'League Average'])
 
 
 def plot_tov():
     plt.figure(figsize=(12,7))
     plt.plot(champs[champs.Year > 1974]['Year'], champs[champs.Year > 1974]['TOVPG'], 'y')
     plt.plot(range(1975,2018), others[others.Year > 1974].groupby('Year')['TOVPG'].mean())
-
+    plt.title('Turnovers per Game')
+    plt.legend(['Champion', 'League Average'])
     
 def plot_fgp():
     plt.figure(figsize=(12,7))
     plt.plot(champs['Year'], champs['FG%'], 'y')
     plt.plot(range(1960,2018), others.groupby('Year')['FG%'].mean())
+    plt.title('Field Goal Percentage per Game')
+    plt.legend(['Champion', 'League Average'])
     
     
     
@@ -188,6 +193,8 @@ def plot_2pa():
     plt.figure(figsize=(12,7))
     plt.plot(champs['Year'], champs['2P Attempts'], 'y')
     plt.plot(range(1960,2018), others.groupby('Year')['2P Attempts'].mean())
+    plt.title('2 Point Attempts')
+    plt.legend(['Champion', 'League Average'])
     
     
 def plot_3pa():
@@ -195,6 +202,8 @@ def plot_3pa():
     plt.figure(figsize=(12,7))
     attempts = data.groupby('Year')['3P Attempts'].mean() / data.groupby('Year')['2P Attempts'].mean()
     plt.plot(attempts)
+    plt.title('3 Point Attempts')
+    plt.legend(['Champion', 'League Average'])
     
     
     
