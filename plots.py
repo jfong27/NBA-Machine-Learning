@@ -9,13 +9,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-def plot_3pa():
+
+data = pd.read_csv('./nba_data.csv')
+champs = data[data.Champion]
+others = data[data.Champion == False]
+
+def plot_3pa1():
     
     model = LinearRegression()
     model.fit(data[['3P Attempts']], data['Wins'])
     X = pd.DataFrame({"3P Attempts": np.arange(0, 3500)})
     y_pred = model.predict(X)
 
+    plt.figure(figsize=(12,7))
     plt.plot(X, y_pred, 'r-')
     plt.scatter(x = data[data['3P Attempts'] > 0]['3P Attempts'], y=data[data['3P Attempts'] > 0]['Wins'])
     plt.title('3P Attempts vs Reg. Season Wins')
@@ -28,6 +34,7 @@ def plot_recent_3():
     X = pd.DataFrame({"3P Attempts": np.arange(0, 3500)})
     y_pred = model.predict(X)
 
+    plt.figure(figsize=(12,7))
     plt.plot(X, y_pred, 'r-')
     plt.scatter(x = recent[recent['3P Attempts'] > 0]['3P Attempts'], y=recent[recent['3P Attempts'] > 0]['Wins'])
 
@@ -68,7 +75,7 @@ def plot_2pa():
     py.iplot(interactive_fig)
 
 
-def plot_apg():
+def plot_apg1():
     slope, intercept, r_value, p_value, std_err = stats.linregress(data.APG[data.Year >= 2000], data.PPG[data.Year >= 2000])
     line = slope*data.APG[data.Year >= 2000]+intercept
 
@@ -135,10 +142,91 @@ def plot_fga():
     
     
 def plot_champs():
+    plt.figure(figsize=(12,7))
     three_data = data[data.Year > 1979]
     champ_three = data[(data.Year > 1979) & (data.Champion == True)]
     plt.plot(three_data['Year'], three_data['3P Attempts'], 'c.')
     plt.plot(champ_three['Year'],champ_three['3P Attempts'], 'k.')
 
 
+def plot_accolades():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs['Year'], champs['Accolades'], 'y')
+    plt.plot(range(1960,2018), others.groupby('Year')['Accolades'].sum()/29)
+    plt.title('Accolades on Finals Winner vs League Average')
+    plt.legend(['Champion', 'League Average'])
+    
+    
+def plot_apg():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs['Year'], champs['APG'], 'y')
+    plt.plot(range(1960,2018), others.groupby('Year')['APG'].mean())
+    plt.title('Assists per Game')
+    plt.legend(['Champion', 'League Average'])
 
+    
+def plot_rpg():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs['Year'], champs['RPG'], 'y')
+    plt.plot(range(1960,2018), others.groupby('Year')['RPG'].mean())
+
+
+def plot_tov():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs[champs.Year > 1974]['Year'], champs[champs.Year > 1974]['TOVPG'], 'y')
+    plt.plot(range(1975,2018), others[others.Year > 1974].groupby('Year')['TOVPG'].mean())
+
+    
+def plot_fgp():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs['Year'], champs['FG%'], 'y')
+    plt.plot(range(1960,2018), others.groupby('Year')['FG%'].mean())
+    
+    
+    
+def plot_2pa():
+    plt.figure(figsize=(12,7))
+    plt.plot(champs['Year'], champs['2P Attempts'], 'y')
+    plt.plot(range(1960,2018), others.groupby('Year')['2P Attempts'].mean())
+    
+    
+def plot_3pa():
+
+    plt.figure(figsize=(12,7))
+    attempts = data.groupby('Year')['3P Attempts'].mean() / data.groupby('Year')['2P Attempts'].mean()
+    plt.plot(attempts)
+    
+    
+    
+    
+def conf_matrix(mat):
+    conf_matrix = pd.DataFrame(index = ["Actual True","Actual False"], columns = ["Predict True","Predict False"]).fillna(0)
+    if mat == 'dummy': 
+        conf_matrix['Predict True']['Actual True'] = 11
+        conf_matrix['Predict False']['Actual False'] = 1222
+        conf_matrix['Predict True']['Actual False'] = 47
+        conf_matrix['Predict False']['Actual True'] = 47
+    elif mat == 'model':
+        conf_matrix['Predict True']['Actual True'] = 32
+        conf_matrix['Predict False']['Actual False'] = 1243
+        conf_matrix['Predict True']['Actual False'] = 26
+        conf_matrix['Predict False']['Actual True'] = 26
+    else:
+        conf_matrix['Predict True']['Actual True'] = 29
+        conf_matrix['Predict False']['Actual False'] = 1217
+        conf_matrix['Predict True']['Actual False'] = 29
+        conf_matrix['Predict False']['Actual True'] = 29
+    return conf_matrix
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
